@@ -14,6 +14,7 @@ input.onkeypress = e => {
     }
     document.querySelector("canvas").removeAttribute("hidden");
     document.querySelector("p").setAttribute("hidden", "hidden");
+    console.log("Connecting to ws://" + host);
     newGame(host);
   }
 };
@@ -67,18 +68,18 @@ const newGame = host => {
   };
 
   onkeydown = e => {
-    if(["w", "a", "s", "d"].includes(e.key)){
-      send({type: "keyDown", data: e.key});
+    if(["w", "a", "s", "d"].includes(e.key.toLowerCase())){
+      send({type: "keyDown", data: e.key.toLowerCase()});
     }
   };
   onkeyup = e => {
-    if(["w", "a", "s", "d"].includes(e.key)){
-      send({type: "keyUp", data: e.key});
+    if(["w", "a", "s", "d"].includes(e.key.toLowerCase())){
+      send({type: "keyUp", data: e.key.toLowerCase()});
     }
   };
   onkeypress = e => {
-    if(e.key === "q"){
-      send({type: "keyPress", data: e.key});
+    if(e.key === " "){
+      send({type: "keyPress", data: "q"});
     }
   };
 };
