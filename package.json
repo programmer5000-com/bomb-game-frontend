@@ -1,0 +1,22 @@
+{
+  "name": "pixel-shooter-frontend",
+  "version": "1.0.0",
+  "description": "The front-end code for programmer5000-com/pixel-shooter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/programmer5000-com/pixel-shooter-frontend.git"
+  },
+  "author": "programmer5000",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/programmer5000-com/pixel-shooter-frontend/issues"
+  },
+  "homepage": "https://github.com/programmer5000-com/pixel-shooter-frontend#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  }
+}
