@@ -76,6 +76,22 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       players.forEach(player => {
         ctx.fillStyle = player.fillColor;
         ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.fillStyle = "gray";
+        const slice = 3;
+        switch(player.direction){
+        case "up":
+          ctx.fillRect(player.x, player.y, player.width, player.height / slice);
+          break;
+        case "down":
+          ctx.fillRect(player.x, player.y + (player.height - player.height / slice), player.width, player.height / slice);
+          break;
+        case "left":
+          ctx.fillRect(player.x, player.y, player.width / slice, player.height);
+          break;
+        case "right":
+          ctx.fillRect(player.x + (player.width - player.width / slice), player.y, player.width / slice, player.height);
+          break;
+        }
       });
 
       ctx.restore();
@@ -90,7 +106,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
   ctx.fillStyle = "gray";
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-  console.log(x, this.y);
+  console.log(x, player.y);
   ctx.fill();
 };
 
