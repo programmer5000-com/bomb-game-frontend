@@ -39,6 +39,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       if(hasLived){
         ctx.clearRect(0, 0, 3000, 5000);
         alert("YOU ARE DEAD");
+        location.reload();
         return;
       }else{
         console.log("none", players);
