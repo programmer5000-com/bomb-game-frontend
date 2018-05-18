@@ -2,7 +2,7 @@
 
 let kill = false;
 
-const isCollision = (rect1, rect2) => {
+/*const isCollision = (rect1, rect2) => {
   if (
     rect1.x < rect2.x + rect2.width &&
       rect1.x + rect1.width > rect2.x &&
@@ -12,11 +12,11 @@ const isCollision = (rect1, rect2) => {
     return true;
   }
   return false;
-};
+};*/
 
 const translateCanvas = (x, y, width, height, canvasWidth, canvasHeight, ctx) => {
-  const xToTranslate = Math.round(-(x + (width / 2) - (canvasWidth / 2)));
-  const yToTranslate = Math.round(-(y + (height / 2) - (canvasHeight / 2)));
+  const xToTranslate = Math.round(-(Math.floor(x) + (width / 2) - (canvasWidth / 2)));
+  const yToTranslate = Math.round(-(Math.floor(y) + (height / 2) - (canvasHeight / 2)));
   ctx.translate(xToTranslate, yToTranslate);
 };
 
@@ -33,7 +33,10 @@ const game = (map) => {//eslint-disable-line no-unused-vars
 
   let hasLived = false;
 
+  const TARGET_MS = 1000 / 60;
+
   const draw = function(){
+    let start = performance.now();
     let player = players.filter(player => player.id === myId)[0];
     if(!player){
       if(hasLived){
@@ -49,9 +52,9 @@ const game = (map) => {//eslint-disable-line no-unused-vars
 
       ctx.clearRect(0, 0, 3000, 5000);
       ctx.save();
-      translateCanvas(player.x, player.y, player.width, player.height, innerWidth, innerHeight, ctx);
+      translateCanvas(Math.floor(player.x), Math.floor(player.y), player.width, player.height, innerWidth, innerHeight, ctx);
       map.blocks.forEach(block => {
-        if(!isCollision({
+        /*if(!isCollision({
           x: block[0],
           y: block[1],
           width: block[2],
@@ -63,7 +66,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
           height: innerHeight
         })){
           return;
-        }
+        }*/
         ctx.fillStyle = "black";
         ctx.fillRect(block[0], block[1], block[2], block[3]);
       });
@@ -97,7 +100,15 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       ctx.restore();
     }
 
-    if(!kill) requestAnimationFrame(draw);
+    let elapsed = performance.now() - start;
+
+    if(!kill){
+      if(TARGET_MS - elapsed < 1) {
+        console.warn("Frame skipping!!");
+        return requestAnimationFrame(draw);
+      }
+      setTimeout(() => requestAnimationFrame(draw), TARGET_MS - elapsed);
+    }
   };
   requestAnimationFrame(draw);
 };

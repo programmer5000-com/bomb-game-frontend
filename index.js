@@ -5,6 +5,66 @@ let bullets = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
 
+
+const convertBase = (value, from_base, to_base) => {
+  value = value.toString();
+  var range = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/".split("");
+  var from_range = range.slice(0, from_base);
+  var to_range = range.slice(0, to_base);
+
+  var dec_value = value.split("").reverse().reduce(function (carry, digit, index) {
+    if (from_range.indexOf(digit) === -1) throw new Error("Invalid digit `"+digit+"` for base "+from_base+".");
+    return carry += from_range.indexOf(digit) * (Math.pow(from_base, index));
+  }, 0);
+
+  var new_value = "";
+  while (dec_value > 0) {
+    new_value = to_range[dec_value % to_base] + new_value;
+    dec_value = (dec_value - (dec_value % to_base)) / to_base;
+  }
+  return new_value || "0";
+};
+
+
+
+const parseResponse = str => {
+  const parts = [];
+  const players = [];
+  const bullets = [];
+  let isPlayer = true;
+
+  str.split("").forEach(char => {
+    if(char === "!" || char === "?"){
+      parts.push(char);
+    }else{
+      parts[parts.length - 1] += char;
+    }
+  });
+  parts.forEach(part => {
+    if(part[0] === "?") isPlayer = false;
+
+    const values = part.slice(1).split("=");
+    if(isPlayer){
+      players.push({
+        x: parseInt(convertBase(values[0], 64, 10)),
+        y: parseInt(convertBase(values[1], 64, 10)),
+        id: parseInt(convertBase(values[2], 64, 10)),
+        width: 20,
+        height: 20
+      });
+    }else{
+      bullets.push({
+        x: parseInt(convertBase(values[0], 64, 10)),
+        y: parseInt(convertBase(values[1], 64, 10)),
+        size: 5
+      });
+    }
+  });
+
+  return {players, bullets};
+};
+
+
 const input = document.querySelector("#host");
 input.onkeypress = e => {
   if(e.key === "Enter"){
@@ -31,6 +91,13 @@ const newGame = host => {
 
   socket.onmessage = (e) => {
     try{
+      if(!e.data.trim()) return;
+      if(e.data[0] === "!"){
+        const parsed = parseResponse(e.data);
+        players = parsed.players;
+        bullets = parsed.bullets;
+        return;
+      }
       JSON.parse(e.data).forEach(data => {
         try{
           switch(data.type){
@@ -46,7 +113,7 @@ const newGame = host => {
             players = data.data.players;
             bullets = data.data.bullets;
             if(tickCounter % 120 === 0){
-              console.log("Players are", players);
+              // console.log("Players are", players);
             }
             tickCounter ++;
             break;
@@ -58,7 +125,7 @@ const newGame = host => {
         }
       });
     }catch(err){
-      console.error("Unexpected error in JSON parsing", err);
+      console.error("Unexpected error in JSON parsing", err, "\"", e.data, "\"");
     }
   };
 
