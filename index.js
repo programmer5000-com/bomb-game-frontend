@@ -25,8 +25,6 @@ const convertBase = (value, from_base, to_base) => {
   return new_value || "0";
 };
 
-
-
 const parseResponse = str => {
   const parts = [];
   const players = [];
@@ -64,7 +62,6 @@ const parseResponse = str => {
   return {players, bullets};
 };
 
-
 const input = document.querySelector("#host");
 input.onkeypress = e => {
   if(e.key === "Enter"){
@@ -94,12 +91,19 @@ const newGame = host => {
       if(!e.data.trim()) return;
       if(e.data[0] === "!"){
         const parsed = parseResponse(e.data);
-        players = parsed.players;
+        players.forEach(player => {
+          parsed.players = parsed.players.filter(player2 => {
+            if(player.id === player2.id){
+              player = Object.assign({}, player, player2);
+            }
+          });
+        });
         bullets = parsed.bullets;
         return;
       }
       JSON.parse(e.data).forEach(data => {
         try{
+          let playerToRemove;
           switch(data.type){
           case "map":
             console.log("got map", data.data);
@@ -117,11 +121,22 @@ const newGame = host => {
             }
             tickCounter ++;
             break;
+          case "newUser":
+            players.push(data.data);
+            break;
+          case "removePlayer":
+            players.some(player => {
+              if(player.id === data.data){
+                playerToRemove = player;
+              }
+            });
+            players.splice(players.indexOf(playerToRemove), 1);
+            break;
           default:
-            throw new Error("Unknown WS protocol type", data.type);
+            throw new Error("Unknown WS protocol type", "\"", data.type, "\"");
           }
         }catch(err){
-          console.error("Unexpected error in message processing", err);
+          console.error("Unexpected error in message processing", err, data);
         }
       });
     }catch(err){

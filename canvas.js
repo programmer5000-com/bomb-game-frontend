@@ -78,7 +78,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       });
       players.forEach(player => {
         ctx.fillStyle = player.fillColor;
-        ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.fillRect(player.x, player.y, player.width || 20, player.height || 20);
         ctx.fillStyle = "gray";
         const slice = 3;
         switch(player.direction){
