@@ -70,7 +70,18 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         ctx.fillStyle = "black";
         ctx.fillRect(block[0], block[1], block[2], block[3]);
       });
+      const translateX = Math.round(player.x + (player.width / 2) - (innerWidth / 2));
+      const translateY = Math.round(player.y + (player.height / 2) - (innerHeight / 2));
       bullets.forEach(bullet => {
+        if(
+          bullet.x + bullet.size < translateX ||
+          bullet.y + bullet.size < translateY ||
+          bullet.x - bullet.size > (translateX + innerWidth) ||
+          bullet.y - bullet.size > (translateY + innerHeight)
+        ){
+          console.log("off-screen");
+          return;
+        }
         ctx.fillStyle = bullet.fillStyle;
         ctx.beginPath();
         ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2, true);
@@ -96,7 +107,6 @@ const game = (map) => {//eslint-disable-line no-unused-vars
           break;
         }
       });
-
       ctx.restore();
     }
 
