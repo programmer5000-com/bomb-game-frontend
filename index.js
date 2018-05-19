@@ -149,16 +149,21 @@ const newGame = host => {
     socket.send(JSON.stringify(data));
   };
 
-  onkeydown = e => {
-    if(["w", "a", "s", "d"].includes(e.key.toLowerCase())){
-      send({type: "keyDown", data: e.key.toLowerCase()});
-    }
+  const validKeys = ["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"];
+
+  const getKeyPressFunc = type => {
+    return e => {
+      const key = e.key.toLowerCase();
+      if(validKeys.includes(key)){
+        send({type: type, data: key}); 
+      }
+    };
   };
-  onkeyup = e => {
-    if(["w", "a", "s", "d"].includes(e.key.toLowerCase())){
-      send({type: "keyUp", data: e.key.toLowerCase()});
-    }
-  };
+
+  onkeydown = getKeyPressFunc("keyDown");
+
+  onkeyup = getKeyPressFunc("keyUp");
+
   onkeypress = e => {
     if(e.key === " "){
       send({type: "keyPress", data: "q"});
