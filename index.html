@@ -25,14 +25,16 @@
     </style>
   </head>
   <body>
-    <p>
-      Enter the server code & press enter:
+    <div>
+      <h1>Welcome to Pixel Shooter!</h1>
+      <p>Use WSAD to move, Space to shoot, and ↑ ↓ ← → to change direction.</p>
+      <p>Type the server code & press enter:</p>
       <input id = "host" list = "hosts"/>
       <datalist id = "hosts">
         <option value = "server.programmer5000.com">Recommended server</option>
         <option value = "localhost">Self-hosted</option>
       </datalist>
-    </p>
+    </div>
     <div id = "respawn" hidden>
       <h1>You died.</h1>
       <button id = "respawn-btn">Respawn</button>
