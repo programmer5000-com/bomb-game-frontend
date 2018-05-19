@@ -2,21 +2,26 @@
 <html>
   <head>
     <title>Pixel Shooter</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style>
-    html,
-    body,
-    canvas:not([hidden]){
-    	margin: 0;
-    	padding: 0;
-    	overflow: hidden;
-    	display: inline-block;
-    /* 	width: 99vw;
-    	height: 99vh; */
-    }
+      body{
+        font-family: "Roboto";
+      }
 
-    canvas:first-child{
-    	border: 1px solid black;
-    }
+      html,
+      body,
+      canvas:not([hidden]){
+      	margin: 0;
+      	padding: 0;
+      	overflow: hidden;
+      	display: inline-block;
+      /* 	width: 99vw;
+      	height: 99vh; */
+      }
+
+      canvas:first-child{
+      	border: 1px solid black;
+      }
     </style>
   </head>
   <body>
@@ -28,6 +33,10 @@
         <option value = "localhost">Self-hosted</option>
       </datalist>
     </p>
+    <div id = "respawn" hidden>
+      <h1>You died.</h1>
+      <button id = "respawn-btn">Respawn</button>
+    </div>
     <canvas width = "100" height = "100" hidden></canvas>
     <script src = "canvas.js"></script>
     <script src = "index.js"></script>

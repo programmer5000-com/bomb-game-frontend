@@ -5,18 +5,6 @@ let kill = false;
 let canvasWidth = innerWidth;
 let canvasHeight = innerHeight;
 
-/*const isCollision = (rect1, rect2) => {
-  if (
-    rect1.x < rect2.x + rect2.width &&
-      rect1.x + rect1.width > rect2.x &&
-      rect1.y < rect2.y + rect2.height &&
-      rect1.height + rect1.y > rect2.y
-  ) {
-    return true;
-  }
-  return false;
-};*/
-
 const translateCanvas = (x, y, width, height, canvasWidth, canvasHeight, ctx) => {
   const xToTranslate = Math.round(-(Math.floor(x) + (width / 2) - (canvasWidth / 2)));
   const yToTranslate = Math.round(-(Math.floor(y) + (height / 2) - (canvasHeight / 2)));
@@ -46,8 +34,8 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     if(!player){
       if(hasLived){
         ctx.clearRect(0, 0, 3000, 5000);
-        alert("YOU ARE DEAD");
-        location.reload();
+        canvas.setAttribute("hidden", "hidden");
+        document.querySelector("#respawn").removeAttribute("hidden");
         return;
       }else{
         console.log("none", players);

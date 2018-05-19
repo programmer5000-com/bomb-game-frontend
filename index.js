@@ -63,17 +63,36 @@ const parseResponse = str => {
 };
 
 const input = document.querySelector("#host");
+
+const getHost = () => {
+  let host = input.value.trim();
+  if(!host.includes(":")){
+    host += ":5000";
+  }
+  return host;
+};
+
+const showCanvas = () => {
+  document.querySelectorAll("body > *").forEach(elem => elem.setAttribute("hidden", "hidden"));
+  document.querySelector("canvas").removeAttribute("hidden");
+};
+
+let lastHost;
+
 input.onkeypress = e => {
   if(e.key === "Enter"){
-    let host = input.value.trim();
-    if(!host.includes(":")){
-      host += ":5000";
-    }
-    document.querySelector("canvas").removeAttribute("hidden");
-    document.querySelector("p").setAttribute("hidden", "hidden");
-    console.log("Connecting to ws://" + host);
+    let host = getHost();
+    showCanvas();
+    console.log("[socket] connecting to ws://" + host);
+    lastHost = host;
     newGame(host);
   }
+};
+
+document.querySelector("#respawn-btn").onclick = () => {
+  console.log("[socket] connecting to ws://" + lastHost);
+  showCanvas();
+  newGame(lastHost);
 };
 
 const newGame = host => {
@@ -155,7 +174,7 @@ const newGame = host => {
     return e => {
       const key = e.key.toLowerCase();
       if(validKeys.includes(key)){
-        send({type: type, data: key}); 
+        send({type: type, data: key});
       }
     };
   };
