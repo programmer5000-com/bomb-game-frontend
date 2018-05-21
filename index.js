@@ -66,7 +66,6 @@ const parseResponse = str => {
     }
   });
 
-  console.log(str);
   return {players, bullets};
 };
 
@@ -116,16 +115,18 @@ const newGame = host => {
       if(!e.data.trim()) return;
       if(e.data[0] === "!"){
         const parsed = parseResponse(e.data);
-        // console.log(players, parsed.players);
         players.forEach((player) => {
-          parsed.players.forEach(player2 => {
+          let exists = parsed.players.some(player2 => {
             if(player.id === player2.id){
               Object.keys(player2).forEach(prop => {
-                if(player[prop] !== player2[prop]) console.log("setting", prop, "from", player[prop], "to", player2[prop]);
                 player[prop] = player2[prop];
               });
+              return true;
             }
           });
+          if(!exists){
+            players.splice(players.indexOf(player), 1);
+          }
         });
         bullets = parsed.bullets;
         return;
@@ -145,7 +146,6 @@ const newGame = host => {
           case "newUser":
             console.log("newUser", data.data, players);
             players.push(data.data);
-            console.log(players);
             break;
           case "removePlayer":
             players.some(player => {
