@@ -38,6 +38,7 @@ const parseResponse = str => {
       parts[parts.length - 1] += char;
     }
   });
+
   parts.forEach(part => {
     if(part[0] === "?") isPlayer = false;
 
@@ -47,6 +48,12 @@ const parseResponse = str => {
         x: parseInt(convertBase(values[0], 64, 10)),
         y: parseInt(convertBase(values[1], 64, 10)),
         id: parseInt(convertBase(values[2], 64, 10)),
+        direction: ({
+          "u": "up",
+          "d": "down",
+          "l": "left",
+          "r": "right"
+        })[values[3]],
         width: 20,
         height: 20
       });
@@ -59,6 +66,7 @@ const parseResponse = str => {
     }
   });
 
+  console.log(str);
   return {players, bullets};
 };
 
@@ -102,18 +110,20 @@ const newGame = host => {
     send({type: "hello", data: {}});
   };
 
-  let tickCounter = 0;
-
 
   socket.onmessage = (e) => {
     try{
       if(!e.data.trim()) return;
       if(e.data[0] === "!"){
         const parsed = parseResponse(e.data);
-        players.forEach(player => {
-          parsed.players = parsed.players.filter(player2 => {
+        // console.log(players, parsed.players);
+        players.forEach((player) => {
+          parsed.players.forEach(player2 => {
             if(player.id === player2.id){
-              player = Object.assign({}, player, player2);
+              Object.keys(player2).forEach(prop => {
+                if(player[prop] !== player2[prop]) console.log("setting", prop, "from", player[prop], "to", player2[prop]);
+                player[prop] = player2[prop];
+              });
             }
           });
         });
@@ -132,16 +142,10 @@ const newGame = host => {
             console.log("info about me", data.data);
             myId = data.data.id;
             break;
-          case "tick":
-            players = data.data.players;
-            bullets = data.data.bullets;
-            if(tickCounter % 120 === 0){
-              // console.log("Players are", players);
-            }
-            tickCounter ++;
-            break;
           case "newUser":
+            console.log("newUser", data.data, players);
             players.push(data.data);
+            console.log(players);
             break;
           case "removePlayer":
             players.some(player => {
@@ -150,6 +154,10 @@ const newGame = host => {
               }
             });
             players.splice(players.indexOf(playerToRemove), 1);
+            break;
+          case "players":
+            players = data.data;
+            console.log("got players", JSON.stringify(data));
             break;
           default:
             throw new Error("Unknown WS protocol type", "\"", data.type, "\"");
