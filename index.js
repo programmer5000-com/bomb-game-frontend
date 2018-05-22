@@ -145,6 +145,12 @@ const newGame = host => {
             break;
           case "newUser":
             console.log("newUser", data.data, players);
+            if(players.some(player => {
+              if(player.id === data.data.id){
+                player.killStreak += data.data.killStreak;
+                return true;
+              }
+            })) return;
             players.push(data.data);
             break;
           case "removePlayer":
