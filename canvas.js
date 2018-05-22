@@ -104,6 +104,15 @@ const game = (map) => {//eslint-disable-line no-unused-vars
           ctx.fillRect(player.x + (player.width - player.width / slice), player.y, player.width / slice, player.height);
           break;
         }
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.font = "15px Roboto, \"Open Sans\", sans-serif";
+        ctx.lineWidth = "3";
+        ctx.strokeStyle = "white";
+        ctx.strokeText(player.username, player.x + (player.width / 2), player.y);
+        ctx.fillStyle = "black";
+        ctx.fillText(player.username, player.x + (player.width / 2), player.y);
       });
       ctx.restore();
     }
