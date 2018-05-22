@@ -81,7 +81,7 @@ const getHost = () => {
 
 const showCanvas = () => {
   document.querySelectorAll("body > *").forEach(elem => elem.setAttribute("hidden", "hidden"));
-  document.querySelector("canvas").removeAttribute("hidden");
+  document.querySelector("#game").removeAttribute("hidden");
 };
 
 let lastHost;
@@ -151,9 +151,18 @@ const newGame = host => {
             players.some(player => {
               if(player.id === data.data){
                 playerToRemove = player;
+                return true;
               }
             });
             players.splice(players.indexOf(playerToRemove), 1);
+            break;
+          case "kill":
+            players.some(player => {
+              if(player.id === data.data.killer){
+                player.killStreak ++;
+                return true;
+              }
+            });
             break;
           case "players":
             players = data.data;

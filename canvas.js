@@ -1,5 +1,7 @@
 /* global players: false, myId: false, bullets: false */
 
+const leaderboard = document.querySelector("#leaderboard");
+
 let kill = false;
 
 let canvasWidth = innerWidth;
@@ -34,7 +36,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     if(!player){
       if(hasLived){
         ctx.clearRect(0, 0, 3000, 5000);
-        canvas.setAttribute("hidden", "hidden");
+        document.querySelector("#game").setAttribute("hidden", "hidden");
         document.querySelector("#respawn").removeAttribute("hidden");
         return;
       }else{
@@ -128,4 +130,26 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     }
   };
   requestAnimationFrame(draw);
+
+  setInterval(() => {
+    const table = document.createElement("table");
+    table.innerHTML = `<table>
+    	<thead>
+    			<tr>
+    					<td>Player</td>
+    					<td>Kills</td>
+    			</tr>
+    	</thead>
+    <tbody>`;
+    players.sort((player1, player2) => player2.killStreak - player1.killStreak).slice(0, 10).forEach(player => {
+      table.innerHTML += `<tr>
+					 <td>${player.username}</td>
+				   <td>${player.killStreak}</td>
+  			</tr>
+			`;
+    });
+    table.innerHTML += "</tbody></table>";
+    if(leaderboard.children[0]) leaderboard.children[0].remove();
+    leaderboard.appendChild(table);
+  }, 250);
 };
