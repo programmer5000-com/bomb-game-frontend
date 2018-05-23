@@ -74,7 +74,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         ){
           return;
         }
-        ctx.fillStyle = bullet.fillStyle;
+        ctx.fillStyle = bullet.fillStyle || "gray";
         ctx.beginPath();
         ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2, true);
         ctx.fill();
