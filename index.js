@@ -74,7 +74,7 @@ const input = document.querySelector("#host");
 const getHost = () => {
   let host = input.value.trim();
   if(!host.includes(":")){
-    host += ":5000";
+    host += ":8080";
   }
   return host;
 };
