@@ -39,8 +39,6 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         document.querySelector("#game").setAttribute("hidden", "hidden");
         document.querySelector("#respawn").removeAttribute("hidden");
         return;
-      }else{
-        console.log("none", players);
       }
     }else{
       hasLived = true;
