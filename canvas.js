@@ -1,4 +1,4 @@
-/* global players: false, myId: false, bullets: false */
+/* global players: false, myId: false, bullets: false, lastKill: true, lastKillTimeout: true */
 
 const leaderboard = document.querySelector("#leaderboard");
 
@@ -132,6 +132,14 @@ const game = (map) => {//eslint-disable-line no-unused-vars
   requestAnimationFrame(draw);
 
   setInterval(() => {
+    lastKillTimeout --;
+    if(lastKillTimeout < 1){
+      lastKill = "";
+    }
+
+    if(leaderboard.children[0]) leaderboard.children[0].remove();
+    if(leaderboard.children[0]) leaderboard.children[0].remove();
+
     const table = document.createElement("table");
     table.innerHTML = `<table>
     	<thead>
@@ -149,7 +157,11 @@ const game = (map) => {//eslint-disable-line no-unused-vars
 			`;
     });
     table.innerHTML += "</tbody></table>";
-    if(leaderboard.children[0]) leaderboard.children[0].remove();
     leaderboard.appendChild(table);
+
+    const div = document.createElement("div");
+    div.setAttribute("id", "last-kill");
+    div.innerText = lastKill;
+    leaderboard.appendChild(div);
   }, 250);
 };

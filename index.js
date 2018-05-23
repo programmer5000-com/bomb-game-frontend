@@ -1,5 +1,8 @@
 /* global game: false */
 let socket;
+let lastKill = "";//eslint-disable-line no-unused-vars
+let lastKillTimeout = 0;//eslint-disable-line no-unused-vars
+
 let players = [];//eslint-disable-line no-unused-vars
 let bullets = [];//eslint-disable-line no-unused-vars
 
@@ -163,13 +166,18 @@ const newGame = host => {
             players.splice(players.indexOf(playerToRemove), 1);
             break;
           case "kill":
+            lastKill = "";
             players.some(player => {
               if(player.id === data.data.killer.id){
                 console.log(data.data);
                 player.killStreak = data.data.killer.killStreak;
+                lastKill = player.username + " killed ";
                 return true;
               }
             });
+
+            lastKill += data.data.victim;
+            lastKillTimeout = 8;
             break;
           case "players":
             players = data.data;
