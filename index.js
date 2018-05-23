@@ -159,12 +159,14 @@ const newGame = host => {
                 return true;
               }
             });
+            if(!playerToRemove) return;
             players.splice(players.indexOf(playerToRemove), 1);
             break;
           case "kill":
             players.some(player => {
-              if(player.id === data.data.killer){
-                player.killStreak ++;
+              if(player.id === data.data.killer.id){
+                console.log(data.data);
+                player.killStreak = data.data.killer.killStreak;
                 return true;
               }
             });
