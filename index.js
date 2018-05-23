@@ -8,6 +8,8 @@ let bullets = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
 
+const killAudio = new Audio("/sounds/kill.ogg");
+const shootAudio = new Audio("/sounds/shoot.ogg");
 
 const convertBase = (value, from_base, to_base) => {
   value = value.toString();
@@ -178,6 +180,7 @@ const newGame = host => {
 
             lastKill += data.data.victim;
             lastKillTimeout = 8;
+            killAudio.play();
             break;
           case "players":
             players = data.data;
@@ -217,6 +220,7 @@ const newGame = host => {
 
   onkeypress = e => {
     if(e.key === " "){
+      shootAudio.play();
       send({type: "keyPress", data: "q"});
     }
   };
