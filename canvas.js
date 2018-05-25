@@ -28,7 +28,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
 
   let hasLived = false;
 
-  const TARGET_MS = 1000 / 60;
+  const TARGET_MS = 1000 / 30;
 
   const draw = function(){
     let start = performance.now();
