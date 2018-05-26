@@ -8,6 +8,21 @@ let bullets = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
 
+const rewrites = {
+  arrowup: "up",
+  arrowdown: "down",
+  arrowleft: "left",
+  arrowright: "right",
+  i: "up",
+  k: "down",
+  j: "left",
+  l: "right",
+  w: "w",
+  s: "s",
+  a: "a",
+  d: "d"
+};
+
 const killAudio = new Audio("/sounds/kill.ogg");
 const shootAudio = new Audio("/sounds/shoot.ogg");
 
@@ -107,6 +122,8 @@ document.querySelector("#respawn-btn").onclick = () => {
   newGame(lastHost);
 };
 
+const maxShotCooldown = 375;// ms
+
 const newGame = host => {
   socket = new WebSocket("ws://" + host);
   socket.onopen = () => {
@@ -203,13 +220,14 @@ const newGame = host => {
     socket.send(JSON.stringify(data));
   };
 
-  const validKeys = ["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"];
-
   const getKeyPressFunc = type => {
     return e => {
-      const key = e.key.toLowerCase();
-      if(validKeys.includes(key)){
+      let key = rewrites[e.key.toLowerCase()];
+
+      if(key){
         send({type: type, data: key});
+      }else{
+        console.log("unknown key", key, e.key);
       }
     };
   };
@@ -218,10 +236,14 @@ const newGame = host => {
 
   onkeyup = getKeyPressFunc("keyUp");
 
+
+  let lastShot = Date.now();
   onkeypress = e => {
-    if(e.key === " "){
+    let now = Date.now();
+    if(e.key === " " && now - lastShot > maxShotCooldown){
+      lastShot = Date.now();
       shootAudio.play();
-      send({type: "keyPress", data: "q"});
+      send({type: "shoot"});
     }
   };
 };
