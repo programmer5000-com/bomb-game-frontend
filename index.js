@@ -4,7 +4,7 @@ let lastKill = "";//eslint-disable-line no-unused-vars
 let lastKillTimeout = 0;//eslint-disable-line no-unused-vars
 
 let players = [];//eslint-disable-line no-unused-vars
-let bullets = [];//eslint-disable-line no-unused-vars
+let bombs = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
 
@@ -48,7 +48,7 @@ const convertBase = (value, from_base, to_base) => {
 const parseResponse = str => {
   const parts = [];
   const players = [];
-  const bullets = [];
+  const bombs = [];
   let isPlayer = true;
 
   str.split("").forEach(char => {
@@ -78,7 +78,7 @@ const parseResponse = str => {
         height: 20
       });
     }else{
-      bullets.push({
+      bombs.push({
         x: parseInt(convertBase(values[0], 64, 10)),
         y: parseInt(convertBase(values[1], 64, 10)),
         size: 5
@@ -86,7 +86,7 @@ const parseResponse = str => {
     }
   });
 
-  return {players, bullets};
+  return {players, bombs};
 };
 
 const input = document.querySelector("#host");
@@ -150,7 +150,7 @@ const newGame = host => {
             players.splice(players.indexOf(player), 1);
           }
         });
-        bullets = parsed.bullets;
+        bombs = parsed.bombs;
         return;
       }
       JSON.parse(e.data).forEach(data => {
@@ -243,7 +243,7 @@ const newGame = host => {
     if(e.key === " " && now - lastShot > maxShotCooldown){
       lastShot = Date.now();
       shootAudio.play();
-      send({type: "shoot"});
+      send({type: "bomb"});
     }
   };
 };
