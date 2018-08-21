@@ -7,6 +7,7 @@ let players = [];//eslint-disable-line no-unused-vars
 let bombs = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
+let blocks;
 
 const rewrites = {
   arrowup: "up",
@@ -159,6 +160,7 @@ const newGame = host => {
           switch(data.type){
           case "map":
             console.log("got map", data.data);
+            blocks = data.data.blocks;
             game(data.data);
             break;
           case "playerinfo":
@@ -202,6 +204,18 @@ const newGame = host => {
           case "players":
             players = data.data;
             console.log("got players", JSON.stringify(data));
+            break;
+          case "explosion":
+            const {x, y, blocksDestroyed} = data.data;
+            const broken = blocks.some(block => blocksDestroyed.filter(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
+            console.log(JSON.stringify(blocks));
+            console.log("destroy", blocksDestroyed, "means", broken);
+            console.log(broken, blocksDestroyed);
+            broken.forEach(block => {
+                console.log("remove", block);
+                const index = blocks.indexOf(block);
+                if(index) blocks.splice(index, 1);
+            });
             break;
           default:
             throw new Error("Unknown WS protocol type", "\"", data.type, "\"");
