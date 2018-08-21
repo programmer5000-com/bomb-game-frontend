@@ -207,7 +207,7 @@ const newGame = host => {
             break;
           case "explosion":
             const {x, y, blocksDestroyed} = data.data;
-            const broken = blocks.some(block => blocksDestroyed.filter(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
+            const broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
             console.log(JSON.stringify(blocks));
             console.log("destroy", blocksDestroyed, "means", broken);
             console.log(broken, blocksDestroyed);
