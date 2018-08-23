@@ -92,8 +92,8 @@ const parseResponse = str => {
 
 const input = document.querySelector("#host");
 
-const getHost = () => {
-  let host = input.value.trim();
+const getHost = (suppliedHost) => {
+  let host = suppliedHost || input.value.trim();
   if(!host.includes(":")){
     host += ":8080";
   }
@@ -260,4 +260,21 @@ const newGame = host => {
       send({type: "bomb"});
     }
   };
+};
+
+const decodeQueryStr = str => str.substr(1).split("&").map(query => query.split("=")).reduce((obj, that) => {
+	if(!that || !that[0]) return;
+	obj[that[0]] = decodeURIComponent(that[1]);
+	return obj;
+}, {});
+
+onhashchange = onload = () => {
+  const parsedHash = decodeQueryStr(location.hash);
+  if(parsedHash && parsedHash.autoconnect){
+    let host = getHost(parsedHash.autoconnect);
+    showCanvas();
+    console.log("[socket] connecting to ws://" + host);
+    lastHost = host;
+    newGame(host);
+  }
 };
