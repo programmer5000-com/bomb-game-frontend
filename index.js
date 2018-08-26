@@ -82,7 +82,7 @@ const parseResponse = str => {
       bombs.push({
         x: parseInt(convertBase(values[0], 64, 10)),
         y: parseInt(convertBase(values[1], 64, 10)),
-        size: 5
+        size: 10
       });
     }
   });

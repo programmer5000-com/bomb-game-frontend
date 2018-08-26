@@ -74,7 +74,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         }
         ctx.fillStyle = bomb.fillStyle || "gray";
         ctx.beginPath();
-        ctx.arc(bomb.x, bomb.y, bomb.size, 0, Math.PI * 2, true);
+        ctx.arc(bomb.x + 10, bomb.y + 10, bomb.size, 0, Math.PI * 2, true);
         ctx.fill();
       });
       players.forEach(player => {
