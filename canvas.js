@@ -1,4 +1,4 @@
-/* global players: false, myId: false, bombs: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false */
+/* global players: false, myId: false, bombs: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false, resetTime: false */
 
 const leaderboard = document.querySelector("#leaderboard");
 
@@ -34,6 +34,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     ctx.clearRect(0, 0, 3000, 5000);
     document.querySelector("#game").setAttribute("hidden", "hidden");
     document.querySelector("#respawn").removeAttribute("hidden");
+    document.querySelector("#reset").setAttribute("hidden", "hidden");
     return;
   };
 
@@ -120,6 +121,16 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         ctx.fillText(player.username, player.x + (player.width / 2), player.y);
       });
       ctx.restore();
+    }
+
+    if(resetTime){
+      document.querySelector("#reset").removeAttribute("hidden");
+      const seconds = (new Date(resetTime)).getTime() / 1000 - Date.now() / 1000;
+      if(seconds >= 0){
+        document.querySelector("#reset-seconds").innerText = (seconds).toFixed(2);
+      }else{
+        document.querySelector("#reset").setAttribute("hidden", "hidden");
+      }
     }
 
     let elapsed = performance.now() - start;

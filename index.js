@@ -9,6 +9,7 @@ let bombs = [];//eslint-disable-line no-unused-vars
 let myId = null;//eslint-disable-line no-unused-vars
 let isDead = false;//eslint-disable-line no-unused-vars
 let blocks = [];
+let resetTime;//eslint-disable-line no-unused-vars
 
 const rewrites = {
   arrowup: "up",
@@ -173,9 +174,11 @@ const newGame = host => {
           case "mapReset":
             console.log("got map reset", data.data);
             blocks = data.data.blocks;
+            resetTime = undefined;
+            document.querySelector("#reset").setAttribute("hidden", "hidden");
             break;
           case "mapResetPending":
-            console.log(data);
+            resetTime = data.data.date;
             break;
           case "playerinfo":
             console.log("info about me", data.data);

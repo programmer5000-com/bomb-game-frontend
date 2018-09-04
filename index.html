@@ -23,12 +23,20 @@
       	border: 1px solid black;
       }
 
-      #leaderboard{
+      .overlay{
         position: absolute;
         margin-left: auto;
         background-color: #aaaaaaa8;
+      }
+
+      #leaderboard{
         top: 0;
         right: 0;
+      }
+
+      #reset{
+        top: 0;
+        left: 0;
       }
 
       #last-kill{
@@ -55,7 +63,8 @@
       <button id = "respawn-btn">Respawn (or press R)</button>
     </div>
     <div id = "game" hidden>
-      <div id="leaderboard" ></div>
+      <div id="leaderboard" class = "overlay"></div>
+      <div id="reset" class = "overlay" hidden>The map will be reset in <span id = "reset-seconds"></span> seconds!</div>
       <canvas width = "100" height = "100"></canvas>
     </div>
     <script src = "canvas.js"></script>
