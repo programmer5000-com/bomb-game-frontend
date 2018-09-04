@@ -139,7 +139,7 @@ const newGame = host => {
   socket.onmessage = (e) => {
     try{
       if(!e.data.trim()) return;
-      if(e.data[0] === "!"){
+      if(e.data[0] === "!" || e.data[0] === "?"){
         const parsed = parseResponse(e.data);
         players.forEach((player) => {
           let exists = parsed.players.some(player2 => {
@@ -239,7 +239,7 @@ const newGame = host => {
         }
       });
     }catch(err){
-      console.error("Unexpected error in JSON parsing", err, "\"", e.data, "\"");
+      console.error("Unexpected error in JSON parsing", err, "\"" + e.data + "\"");
     }
   };
 
