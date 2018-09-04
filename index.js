@@ -7,6 +7,7 @@ let players = [];//eslint-disable-line no-unused-vars
 let bombs = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
+let isDead = false;//eslint-disable-line no-unused-vars
 let blocks;
 
 const rewrites = {
@@ -21,7 +22,8 @@ const rewrites = {
   w: "w",
   s: "s",
   a: "a",
-  d: "d"
+  d: "d",
+  r: "respawn"
 };
 
 const killAudio = new Audio("/sounds/kill.ogg");
@@ -126,6 +128,7 @@ document.querySelector("#respawn-btn").onclick = () => {
 const maxShotCooldown = 375;// ms
 
 const newGame = host => {
+  isDead = false;
   socket = new WebSocket("ws://" + host);
   socket.onopen = () => {
     console.log("[socket] connected");
@@ -156,6 +159,10 @@ const newGame = host => {
       }
       JSON.parse(e.data).forEach(data => {
         try{
+          let x;//eslint-disable-line no-unused-vars
+          let y;//eslint-disable-line no-unused-vars
+          let blocksDestroyed;
+          let broken;
           let playerToRemove;
           switch(data.type){
           case "map":
@@ -189,6 +196,7 @@ const newGame = host => {
           case "kill":
             lastKill = "";
             players.some(player => {
+              if(myId === data.data.killer.id) return isDead = true;
               if(player.id === data.data.killer.id){
                 console.log(data.data);
                 player.killStreak = data.data.killer.killStreak;
@@ -206,15 +214,17 @@ const newGame = host => {
             console.log("got players", JSON.stringify(data));
             break;
           case "explosion":
-            const {x, y, blocksDestroyed} = data.data;
-            const broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
+            x = data.data.x;
+            y = data.data.y;
+            blocksDestroyed = data.data.blocksDestroyed;
+            broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
             console.log(JSON.stringify(blocks));
             console.log("destroy", blocksDestroyed, "means", broken);
             console.log(broken, blocksDestroyed);
             broken.forEach(block => {
-                console.log("remove", block);
-                const index = blocks.indexOf(block);
-                if(index) blocks.splice(index, 1);
+              console.log("remove", block);
+              const index = blocks.indexOf(block);
+              if(index) blocks.splice(index, 1);
             });
             break;
           default:
@@ -238,7 +248,11 @@ const newGame = host => {
     return e => {
       let key = rewrites[e.key.toLowerCase()];
 
-      if(key){
+      if(key === "respawn" && type === "keyUp"){
+        socket.close();
+        showCanvas();
+        newGame(lastHost);
+      }else if(key){
         send({type: type, data: key});
       }else{
         console.log("unknown key", key, e.key);
@@ -263,9 +277,9 @@ const newGame = host => {
 };
 
 const decodeQueryStr = str => str.substr(1).split("&").map(query => query.split("=")).reduce((obj, that) => {
-	if(!that || !that[0]) return;
-	obj[that[0]] = decodeURIComponent(that[1]);
-	return obj;
+  if(!that || !that[0]) return;
+  obj[that[0]] = decodeURIComponent(that[1]);
+  return obj;
 }, {});
 
 onhashchange = onload = () => {
