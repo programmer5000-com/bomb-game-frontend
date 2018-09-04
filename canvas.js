@@ -1,4 +1,4 @@
-/* global players: false, myId: false, bombs: false, lastKill: true, lastKillTimeout: true */
+/* global players: false, myId: false, bombs: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false */
 
 const leaderboard = document.querySelector("#leaderboard");
 
@@ -55,7 +55,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       const translateX = Math.round(player.x + (player.width / 2) - (canvasWidth / 2));
       const translateY = Math.round(player.y + (player.height / 2) - (canvasHeight / 2));
 
-      map.blocks.forEach(block => {
+      blocks.forEach(block => {
         if(
           block[0] + block[2] < translateX ||
           block[1] + block[3] < translateY ||

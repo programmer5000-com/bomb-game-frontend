@@ -8,7 +8,7 @@ let bombs = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
 let isDead = false;//eslint-disable-line no-unused-vars
-let blocks;
+let blocks = [];
 
 const rewrites = {
   arrowup: "up",
@@ -170,6 +170,13 @@ const newGame = host => {
             blocks = data.data.blocks;
             game(data.data);
             break;
+          case "mapReset":
+            console.log("got map reset", data.data);
+            blocks = data.data.blocks;
+            break;
+          case "mapResetPending":
+            console.log(data);
+            break;
           case "playerinfo":
             console.log("info about me", data.data);
             myId = data.data.id;
@@ -218,9 +225,6 @@ const newGame = host => {
             y = data.data.y;
             blocksDestroyed = data.data.blocksDestroyed;
             broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
-            console.log(JSON.stringify(blocks));
-            console.log("destroy", blocksDestroyed, "means", broken);
-            console.log(broken, blocksDestroyed);
             broken.forEach(block => {
               console.log("remove", block);
               const index = blocks.indexOf(block);
