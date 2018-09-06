@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html class="dark-theme">
   <head>
     <title>Pixel Shooter</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|VT323" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet">
     <style>
+      :root{
+        --bkg-color: white;
+        --color: black;
+      }
+
+      :root.dark-theme{
+        --bkg-color: black;
+        --color: white;
+      }
+
+      html{
+        background: var(--bkg-color);
+        color: var(--color);
+      }
+
       body{
         font-family: "VT323";
         font-size: larger;
@@ -20,8 +35,14 @@
       }
 
       button {
-        background: none;
+        background: inherit;
         border: 2px solid;
+        background: var(--bkg-color);
+        color: var(--color);
+      }
+
+      button:hover{
+        cursor: pointer;
       }
 
       html,
@@ -57,6 +78,10 @@
 
       #last-kill{
         font-size: smaller;
+      }
+
+      a{
+        color: inherit;
       }
     </style>
   </head>
