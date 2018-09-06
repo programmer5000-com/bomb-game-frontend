@@ -110,8 +110,6 @@ const showCanvas = () => {
 
 let lastHost;
 
-
-
 playBtn.onclick = () => {
   let host = getHost("bomb-game.herokuapp.com:80");
   showCanvas();
