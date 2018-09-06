@@ -31,6 +31,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
   const TARGET_MS = 1000 / 30;
 
   const dead = () => {
+    console.log("dead");
     ctx.clearRect(0, 0, 3000, 5000);
     document.querySelector("#game").setAttribute("hidden", "hidden");
     document.querySelector("#respawn").removeAttribute("hidden");
@@ -44,7 +45,8 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     let player = players.filter(player => player.id === myId)[0];
     if(!player){
       if(hasLived){
-        return dead();
+        console.log("could not find self");
+        //return dead();
       }
     }else{
       hasLived = true;

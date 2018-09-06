@@ -165,6 +165,7 @@ const newGame = host => {
           let blocksDestroyed;
           let broken;
           let playerToRemove;
+          let killer;
           switch(data.type){
           case "map":
             console.log("got map", data.data);
@@ -205,18 +206,18 @@ const newGame = host => {
             break;
           case "kill":
             lastKill = "";
-            players.some(player => {
-              if(myId === data.data.killer.id) return isDead = true;
-              if(player.id === data.data.killer.id){
-                console.log(data.data);
-                player.killStreak = data.data.killer.killStreak;
-                lastKill = player.username + " killed ";
-                return true;
-              }
-            });
+            if(myId === data.data.victim.id){
+              console.log("i was killed by ", data.data.killer.username);
+              return isDead = true;
+            }
 
-            lastKill += data.data.victim;
-            lastKillTimeout = 8;
+            killer = (players.filter(player => player.id === data.data.killer.id) || [])[0];
+            if(killer){
+              killer.killStreak = data.data.killer.killStreak;
+            }
+            lastKill = data.data.killer.username + " killed " + data.data.victim.username;
+
+            lastKillTimeout = 16;
             killAudio.play();
             break;
           case "players":
@@ -255,7 +256,8 @@ const newGame = host => {
     return e => {
       let key = rewrites[e.key.toLowerCase()];
 
-      if(key === "respawn" && type === "keyUp"){
+      if(key === "respawn"){
+        if(type === "keyDown") return;
         socket.close();
         showCanvas();
         newGame(lastHost);
