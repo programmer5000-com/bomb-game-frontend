@@ -2,10 +2,26 @@
 <html>
   <head>
     <title>Pixel Shooter</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|VT323" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet">
     <style>
       body{
-        font-family: "Roboto";
+        font-family: "VT323";
+        font-size: larger;
+      }
+
+      #start{
+        margin: 2em;
+      }
+
+      h1{
+        font-family: "Roboto Mono";
+        margin-top: 0;
+      }
+
+      button {
+        background: none;
+        border: 2px solid;
       }
 
       html,
@@ -45,16 +61,11 @@
     </style>
   </head>
   <body>
-    <div>
-      <h1>Welcome to Pixel Shooter!</h1>
-      <p>Use WSAD to move, Space to shoot, and ↑ ↓ ← → to change direction.</p>
-      <p>Type the server code & press enter:</p>
-      <input id = "host" list = "hosts"/>
-      <datalist id = "hosts">
-        <option value = "server.programmer5000.com">Recommended server</option>
-        <option value = "bomb-game.herokuapp.com:80">Beta server (faster but occasionally crashes)</option>
-        <option value = "localhost">Self-hosted (only if you are running it yourself)</option>
-      </datalist>
+    <div id="start">
+      <h1>Pixel Bomber</h1>
+      <p>*permanent title pending*</p>
+      <p>Use WSAD to move, and space to place a bomb.</p>
+      <button id="play">Play</button>
       <br/>
       <br/>
       <a href = "https://discord.gg/BZZ7DXJ">Say hi on Discord!</a>

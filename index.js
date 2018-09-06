@@ -93,10 +93,10 @@ const parseResponse = str => {
   return {players, bombs};
 };
 
-const input = document.querySelector("#host");
+const playBtn = document.querySelector("#play");
 
 const getHost = (suppliedHost) => {
-  let host = suppliedHost || input.value.trim();
+  let host = suppliedHost;
   if(!host.includes(":")){
     host += ":8080";
   }
@@ -110,14 +110,14 @@ const showCanvas = () => {
 
 let lastHost;
 
-input.onkeypress = e => {
-  if(e.key === "Enter"){
-    let host = getHost();
-    showCanvas();
-    console.log("[socket] connecting to ws://" + host);
-    lastHost = host;
-    newGame(host);
-  }
+
+
+playBtn.onclick = () => {
+  let host = getHost("bomb-game.herokuapp.com:80");
+  showCanvas();
+  console.log("[socket] connecting to ws://" + host);
+  lastHost = host;
+  newGame(host);
 };
 
 document.querySelector("#respawn-btn").onclick = () => {
