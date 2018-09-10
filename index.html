@@ -108,6 +108,19 @@
       <div id="reset" class = "overlay" hidden>The map will be reset in <span id = "reset-seconds"></span> seconds!</div>
       <canvas width = "100" height = "100"></canvas>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDrlVVk0-hwsDkclxHDflWNxTxyYVjTUPA",
+        authDomain: "bomb-game.firebaseapp.com",
+        databaseURL: "https://bomb-game.firebaseio.com",
+        projectId: "bomb-game",
+        storageBucket: "bomb-game.appspot.com",
+        messagingSenderId: "192692746305"
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src = "canvas.js"></script>
     <script src = "index.js"></script>
   </body>

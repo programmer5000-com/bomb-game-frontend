@@ -213,6 +213,7 @@ const newGame = host => {
             if(killer){
               killer.killStreak = data.data.killer.killStreak;
             }
+            console.log(data.data);
             lastKill = data.data.killer.username + " killed " + data.data.victim.username;
 
             lastKillTimeout = 16;
