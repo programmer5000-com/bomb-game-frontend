@@ -87,6 +87,12 @@
       a{
         color: inherit;
       }
+
+      .logo-button{
+        height: 1em;
+        margin: 0;
+        vertical-align: middle;
+      }
     </style>
   </head>
   <body>
@@ -97,7 +103,19 @@
       <button id="play">Play</button>
       <br/>
       <br/>
-      <a href = "https://discord.gg/BZZ7DXJ">Say hi on Discord!</a>
+      <div id = "signed-out" hidden>
+        <h2 id = "sign-in-width">Sign in or sign up with</h2>
+        <button class = "sign-in" data-auth-name = "Google"><img src="/img/google_logo.png" class = "logo-button"></button>
+      </div>
+
+      <div id = "signed-in" hidden>
+        <button id = "profile">
+          <h2 id = "sign-in-width">Signed in as</h2>
+          <span>Unknown</span>
+          <img class="logo-button" src="/">
+        </button>
+        <button id = "sign-out">Sign out</button>
+      </div>
     </div>
     <div id = "respawn" hidden>
       <h1>You died.</h1>
@@ -108,19 +126,9 @@
       <div id="reset" class = "overlay" hidden>The map will be reset in <span id = "reset-seconds"></span> seconds!</div>
       <canvas width = "100" height = "100"></canvas>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyDrlVVk0-hwsDkclxHDflWNxTxyYVjTUPA",
-        authDomain: "bomb-game.firebaseapp.com",
-        databaseURL: "https://bomb-game.firebaseio.com",
-        projectId: "bomb-game",
-        storageBucket: "bomb-game.appspot.com",
-        messagingSenderId: "192692746305"
-      };
-      firebase.initializeApp(config);
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-auth.js"></script>
+    <script src = "auth.js"></script>
     <script src = "canvas.js"></script>
     <script src = "index.js"></script>
   </body>
