@@ -1,8 +1,9 @@
 /* global firebase: false */
 
+let token;//eslint-disable-line no-unused-vars
 
 // Initialize Firebase
-var config = {
+let config = {
   apiKey: "AIzaSyDrlVVk0-hwsDkclxHDflWNxTxyYVjTUPA",
   authDomain: "bomb-game.firebaseapp.com",
   databaseURL: "https://bomb-game.firebaseio.com",
@@ -27,7 +28,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     console.log("SIGNED IN", {displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData});
 
-    firebase.auth().currentUser.getIdToken().then(console.log);
+    firebase.auth().currentUser.getIdToken().then(newToken => token = newToken);
     $("#signed-out").setAttribute("hidden", "hidden");
     $("#signed-in").removeAttribute("hidden");
 
@@ -44,7 +45,10 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
-$("button#sign-out").onclick = () => firebase.auth().signOut();
+$("button#sign-out").onclick = () => {
+  firebase.auth().signOut();
+  token = undefined;
+};
 document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
   console.log(button);
   firebase.auth().signInWithPopup(new firebase.auth[button.dataset.authName + "AuthProvider"]());

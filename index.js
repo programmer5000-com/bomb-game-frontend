@@ -1,4 +1,4 @@
-/* global game: false */
+/* global game: false, token: false, firebase: false */
 let socket;
 let lastKill = "";//eslint-disable-line no-unused-vars
 let lastKillTimeout = 0;//eslint-disable-line no-unused-vars
@@ -126,12 +126,13 @@ document.querySelector("#respawn-btn").onclick = () => {
 
 const maxShotCooldown = 375;// ms
 
-const newGame = host => {
+const newGame = host => {//eslint-disable-line no-unused-vars
   isDead = false;
   socket = new WebSocket("ws://" + host);
   socket.onopen = () => {
     console.log("[socket] connected");
-    send({type: "hello", data: {}});
+    console.log(token);
+    send({type: "hello", data: {token: token}});
   };
 
 
@@ -255,7 +256,7 @@ const newGame = host => {
     return e => {
       let key = rewrites[e.key.toLowerCase()];
 
-      if(key === "respawn"){
+      if(key === "respawn"){//eslint-disable-line no-unused-vars
         if(type === "keyDown") return;
         socket.close();
         showCanvas();
@@ -290,7 +291,7 @@ const decodeQueryStr = str => str.substr(1).split("&").map(query => query.split(
   return obj;
 }, {});
 
-onhashchange = onload = () => {
+firebase.auth().onAuthStateChanged(() => {
   const parsedHash = decodeQueryStr(location.hash);
   if(parsedHash && parsedHash.autoconnect){
     let host = getHost(parsedHash.autoconnect);
@@ -299,4 +300,4 @@ onhashchange = onload = () => {
     lastHost = host;
     newGame(host);
   }
-};
+});
