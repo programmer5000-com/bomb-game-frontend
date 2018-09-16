@@ -1,0 +1,88 @@
+:root{
+  --bkg-color: white;
+  --color: black;
+}
+
+:root.dark-theme{
+  --bkg-color: black;
+  --color: white;
+}
+
+html{
+  background: var(--bkg-color);
+  color: var(--color);
+}
+
+body{
+  font-family: "VT323";
+  font-size: larger;
+}
+
+#start{
+  margin: 2em;
+}
+
+h1{
+  font-family: "Roboto Mono";
+  margin-top: 0;
+}
+
+button {
+  background: inherit;
+  border: 2px solid;
+  background: var(--bkg-color);
+  color: var(--color);
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+html,
+body,
+canvas:not([hidden]){
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: inline-block;
+/* 	width: 99vw;
+  height: 99vh; */
+}
+
+canvas:first-child{
+  border: 1px solid black;
+}
+
+.overlay{
+  position: absolute;
+  margin-left: auto;
+  background-color: #aaaaaaa8;
+}
+
+#leaderboard{
+  top: 0;
+  right: 0;
+}
+
+#reset{
+  top: 0;
+  left: 0;
+}
+
+#last-kill{
+  font-size: smaller;
+}
+
+#game{
+  background: var(--bkg-color);
+}
+
+a{
+  color: inherit;
+}
+
+.logo-button{
+  height: 1em;
+  margin: 0;
+  vertical-align: middle;
+}
