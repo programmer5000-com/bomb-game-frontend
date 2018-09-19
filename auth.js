@@ -53,3 +53,6 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
   console.log(button);
   firebase.auth().signInWithPopup(new firebase.auth[button.dataset.authName + "AuthProvider"]());
 });
+
+const db = firebase.firestore();
+db.settings({timestampsInSnapshots: true});
