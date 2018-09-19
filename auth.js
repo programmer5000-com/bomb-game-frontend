@@ -51,7 +51,13 @@ $("button#sign-out").onclick = () => {
 };
 document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
   console.log(button);
-  firebase.auth().signInWithPopup(new firebase.auth[button.dataset.authName + "AuthProvider"]());
+  firebase.auth().signInWithPopup(new firebase.auth[button.dataset.authName + "AuthProvider"]()).then(() => {
+    const currentUser = firebase.auth().currentUser;
+    const isNewUser = currentUser.metadata.creationTime === currentUser.metadata.lastSignInTime;
+    if(!isNewUser) return;
+
+    db.collection("users").doc(currentUser.uid).set({username: prompt("set your username")});
+  }).catch(console.error);
 });
 
 const db = firebase.firestore();
