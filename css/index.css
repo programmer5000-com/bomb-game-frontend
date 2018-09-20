@@ -82,8 +82,9 @@ a{
 }
 
 .logo-button{
-  height: 1em;
+  height: 1.5em;
   margin: 0;
+  margin-top: 5px;
   vertical-align: middle;
 }
 
