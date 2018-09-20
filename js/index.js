@@ -94,6 +94,7 @@ const parseResponse = str => {
 };
 
 const playBtn = document.querySelector("#play");
+const playAccountBtn = document.querySelector("#play-account");
 
 const getHost = (suppliedHost) => {
   let host = suppliedHost;
@@ -110,7 +111,7 @@ const showCanvas = () => {
 
 let lastHost;
 
-playBtn.onclick = () => {
+playBtn.onclick = playAccountBtn.onclick = () => {
   let host = getHost("bomb-game.herokuapp.com:80");
   showCanvas();
   console.log("[socket] connecting to ws://" + host);

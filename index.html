@@ -11,7 +11,15 @@
       <h1>Pixel Bomber</h1>
       <p>*permanent title pending*</p>
       <p>Use WSAD to move, and space to place a bomb.</p>
-      <button id="play">Play</button>
+      <div id = "no-account-play">
+        <label for = "username">Username</label>
+        <input id = "username" disabled placeholder="@f3)#tghGE3he=9DHge0!0tA |r-;]"/>
+        <button id="play">Play</button>
+        <span id = "username-span">You need an account to change your username.</span>
+      </div>
+      <div id = "account-play">
+        <button id = "play-account">Play with account</button>
+      </div>
       <br/>
       <br/>
       <div id = "signed-out" hidden>

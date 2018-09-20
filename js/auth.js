@@ -37,11 +37,16 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     const img = $("#profile").querySelector("img");
     img.src = user.photoURL;
+
+    $("#no-account-play").setAttribute("hidden", "hidden");
+    $("#account-play").removeAttribute("hidden");
   } else {
     // User is signed out.
     console.log("SIGNED OUT");
     $("#signed-out").removeAttribute("hidden");
     $("#signed-in").setAttribute("hidden", "hidden");
+    $("#no-account-play").removeAttribute("hidden");
+    $("#account-play").setAttribute("hidden", "hidden");
   }
 });
 
