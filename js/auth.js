@@ -28,7 +28,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     console.log("SIGNED IN", {displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData});
 
-    firebase.auth().currentUser.getIdToken().then(newToken => token = newToken);
+    firebase.auth().currentUser.getIdToken().then(newToken => token = newToken).catch(e => console.error("token", e));
     $("#signed-out").setAttribute("hidden", "hidden");
     $("#signed-in").removeAttribute("hidden");
 
@@ -68,7 +68,9 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
     db.collection("users").doc(currentUser.uid).set({username: "unknown-username-" + Math.random() * Math.pow(10, 17)});
 
     $("#username-modal").removeAttribute("hidden");
-  }).catch(console.error);
+  }).catch(e => {
+    console.error("Could not sign in / sign up to", button.dataset.authName, "because i got", e, error.code);
+  });
 });
 
 const db = firebase.firestore();
