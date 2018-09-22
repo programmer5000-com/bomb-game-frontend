@@ -3,15 +3,15 @@
 let token;//eslint-disable-line no-unused-vars
 
 // Initialize Firebase
-let config = {
+/*let config = {
   apiKey: "AIzaSyDrlVVk0-hwsDkclxHDflWNxTxyYVjTUPA",
-  authDomain: location.hostname,
+  authDomain: location.host,
   databaseURL: "https://bomb-game.firebaseio.com",
   projectId: "bomb-game",
   storageBucket: "bomb-game.appspot.com",
   messagingSenderId: "192692746305"
 };
-firebase.initializeApp(config);
+firebase.initializeApp(config);*/
 
 const $ = x => document.querySelector(x);
 
@@ -58,6 +58,7 @@ $("button#sign-out").onclick = () => {
   token = undefined;
 };
 document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
+  Error.stackTraceLimit = 30;
   console.log(button);
   firebase.auth().signInWithPopup(new firebase.auth[button.dataset.authName + "AuthProvider"]()).then(() => {
     const currentUser = firebase.auth().currentUser;
@@ -67,14 +68,17 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
     db.collection("users").doc(currentUser.uid).set({username: "unknown-username-" + Math.random() * Math.pow(10, 17)});
 
     $("#username-modal").removeAttribute("hidden");
-    $("#set-username").onkeypress = e => {
-      if(e.keyCode === 13){
-        db.collection("users").doc(currentUser.uid).set({username: $("#set-username").value.trim()});
-        $("#username-modal").setAttribute("hidden", "hidden");
-      }
-    };
   }).catch(console.error);
 });
 
 const db = firebase.firestore();
 db.settings({timestampsInSnapshots: true});
+
+$("#set-username").onkeypress = e => {
+  if(e.keyCode === 13){
+    db.collection("users").doc(firebase.auth().currentUser.uid).set({username: $("#set-username").value.trim()});
+    $("#username-modal").setAttribute("hidden", "hidden");
+  }
+};
+
+$("#change-username").onclick = () => $("#username-modal").removeAttribute("hidden");
