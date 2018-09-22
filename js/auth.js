@@ -65,8 +65,6 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
     const isNewUser = currentUser.metadata.creationTime === currentUser.metadata.lastSignInTime;
     if(!isNewUser) return;
 
-    db.collection("users").doc(currentUser.uid).set({username: "unknown-username-" + Math.random() * Math.pow(10, 17)});
-
     $("#username-modal").removeAttribute("hidden");
   }).catch(e => {
     console.error("Could not sign in / sign up to", button.dataset.authName, "because i got", e, error.code);
