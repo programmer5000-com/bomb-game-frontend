@@ -138,3 +138,7 @@ body{
   display: block;
   width: 20ch;
 }
+
+button.sign-in {
+    background: white;
+}
