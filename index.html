@@ -9,7 +9,11 @@
   <body>
     <div id="username-modal" hidden>
       <h2>Set your username</h2>
-	    <input type="text" id="set-username" maxlength="20"/>
+      <form autocomplete="off">
+        <i>Usernames must be only lowercase letters, numbers, and underscores.</i>
+  	    <input type="text" id="set-username" maxlength="20" pattern="[0-9a-z_]{2,20}" required/>
+        <input type="submit" hidden/>
+      </form>
     </div>
     <div id="start">
       <h1>Pixel Bomber</h1>

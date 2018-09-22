@@ -136,4 +136,5 @@ body{
 #set-username{
   margin: 0 auto;
   display: block;
+  width: 20ch;
 }

@@ -74,11 +74,11 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
 const db = firebase.firestore();
 db.settings({timestampsInSnapshots: true});
 
-$("#set-username").onkeypress = e => {
-  if(e.keyCode === 13){
-    db.collection("users").doc(firebase.auth().currentUser.uid).set({username: $("#set-username").value.trim()});
+$("#set-username").onsubmit = e => {
+  e.preventDefault();
+  db.collection("users").doc(firebase.auth().currentUser.uid).set({username: $("#set-username").value.trim()}).then(() => {
     $("#username-modal").setAttribute("hidden", "hidden");
-  }
+  }).catch(console.error);
 };
 
 $("#change-username").onclick = () => $("#username-modal").removeAttribute("hidden");
