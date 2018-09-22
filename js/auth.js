@@ -67,14 +67,14 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
 
     $("#username-modal").removeAttribute("hidden");
   }).catch(e => {
-    console.error("Could not sign in / sign up to", button.dataset.authName, "because i got", e, error.code);
+    console.error("Could not sign in / sign up to", button.dataset.authName, "because i got", e, e.code);
   });
 });
 
 const db = firebase.firestore();
 db.settings({timestampsInSnapshots: true});
 
-$("#set-username").onsubmit = e => {
+$("#set-username-form").onsubmit = e => {
   e.preventDefault();
   db.collection("users").doc(firebase.auth().currentUser.uid).set({username: $("#set-username").value.trim()}).then(() => {
     $("#username-modal").setAttribute("hidden", "hidden");
