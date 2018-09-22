@@ -5,7 +5,7 @@ let token;//eslint-disable-line no-unused-vars
 // Initialize Firebase
 let config = {
   apiKey: "AIzaSyDrlVVk0-hwsDkclxHDflWNxTxyYVjTUPA",
-  authDomain: "bomb-game.firebaseapp.com",
+  authDomain: location.hostname,
   databaseURL: "https://bomb-game.firebaseio.com",
   projectId: "bomb-game",
   storageBucket: "bomb-game.appspot.com",
@@ -64,7 +64,15 @@ document.querySelectorAll(".sign-in").forEach(button => button.onclick = () => {
     const isNewUser = currentUser.metadata.creationTime === currentUser.metadata.lastSignInTime;
     if(!isNewUser) return;
 
-    db.collection("users").doc(currentUser.uid).set({username: prompt("set your username")});
+    db.collection("users").doc(currentUser.uid).set({username: "unknown-username-" + Math.random() * Math.pow(10, 17)});
+
+    $("#username-modal").removeAttribute("hidden");
+    $("#set-username").onkeypress = e => {
+      if(e.keyCode === 13){
+        db.collection("users").doc(currentUser.uid).set({username: $("#set-username").value.trim()});
+        $("#username-modal").setAttribute("hidden", "hidden");
+      }
+    };
   }).catch(console.error);
 });
 

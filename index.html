@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/css/index.css">
   </head>
   <body>
+    <div id="username-modal" hidden>
+      <h2>Set your username</h2>
+	    <input type="text" id="set-username" maxlength="20"/>
+    </div>
     <div id="start">
       <h1>Pixel Bomber</h1>
       <p>*permanent title pending*</p>
@@ -45,9 +49,9 @@
       <div id="reset" class = "overlay" hidden>The map will be reset in <span id = "reset-seconds"></span> seconds!</div>
       <canvas width = "100" height = "100"></canvas>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-firestore.js"></script>
+    <script src="/__/firebase/5.4.2/firebase-app.js"></script>
+    <script src="/__/firebase/5.4.2/firebase-auth.js"></script>
+    <script src="/__/firebase/5.4.2/firebase-firestore.js"></script>
     <script src = "/js/auth.js"></script>
     <script src = "/js/canvas.js"></script>
     <script src = "/js/index.js"></script>

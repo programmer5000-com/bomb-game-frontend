@@ -119,3 +119,21 @@ body{
   animation-duration:1s;
   animation-delay: 0.5s
 }
+
+#username-modal{
+  position: absolute;
+  background: #2b2b2b;
+  top: 2em;
+  left: 2em;
+  width: calc(100vw - 4em);
+  height: calc(100vh - 4em);
+}
+
+#username-modal > *{
+    text-align: center;
+}
+
+#set-username{
+  margin: 0 auto;
+  display: block;
+}
