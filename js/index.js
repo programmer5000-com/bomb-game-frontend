@@ -27,7 +27,7 @@ const rewrites = {
   d: "d",
   r: "respawn",
   control: "bomb",
-  " ": "bullet"
+  " ": "shoot"
 };
 
 const killAudio = new Audio("/sounds/kill.ogg");
@@ -90,15 +90,16 @@ const parseResponse = str => {
         size: 10
       });
     }else if(part[0] === "."){
+      console.log("bullet found from server");
       bullets.push({
         x: parseInt(convertBase(values[0], 64, 10)),
         y: parseInt(convertBase(values[1], 64, 10)),
-        size: 10
+        size: 5
       });
     }
   });
 
-  return {players, bombs};
+  return {players, bombs, bullets};
 };
 
 const playBtn = document.querySelector("#play");
@@ -164,6 +165,7 @@ const newGame = host => {//eslint-disable-line no-unused-vars
           }
         });
         bombs = parsed.bombs;
+        bullets = parsed.bullets;
         return;
       }
       JSON.parse(e.data).forEach(data => {
@@ -265,8 +267,9 @@ const newGame = host => {//eslint-disable-line no-unused-vars
     return e => {
       let key = rewrites[e.key.toLowerCase()];
 
-      if(key === "bullet" || key === "bomb"){
+      if(key === "shoot" || key === "bomb"){
         if(type !== "keyUp") return;
+        console.log(key);
         shootAudio.play();
         send({type: key});
         return;
