@@ -1,4 +1,4 @@
-/* global players: false, myId: false, bombs: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false, resetTime: false */
+/* global players: false, myId: false, bombs: false, bullets: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false, resetTime: false */
 
 const leaderboard = document.querySelector("#leaderboard");
 
@@ -83,6 +83,20 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         ctx.fillStyle = bomb.fillStyle || "gray";
         ctx.beginPath();
         ctx.arc(bomb.x + 10, bomb.y + 10, bomb.size, 0, Math.PI * 2, true);
+        ctx.fill();
+      });
+      bullets.forEach(bullet => {
+        if(
+          bullet.x + bullet.size < translateX ||
+          bullet.y + bullet.size < translateY ||
+          bullet.x - bullet.size > (translateX + canvasWidth) ||
+          bullet.y - bullet.size > (translateY + canvasHeight)
+        ){
+          return;
+        }
+        ctx.fillStyle = bullet.fillStyle || "gray";
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2, true);
         ctx.fill();
       });
       players.forEach(player => {

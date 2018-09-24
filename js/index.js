@@ -5,6 +5,7 @@ let lastKillTimeout = 0;//eslint-disable-line no-unused-vars
 
 let players = [];//eslint-disable-line no-unused-vars
 let bombs = [];//eslint-disable-line no-unused-vars
+let bullets = [];//eslint-disable-line no-unused-vars
 
 let myId = null;//eslint-disable-line no-unused-vars
 let isDead = false;//eslint-disable-line no-unused-vars
@@ -24,7 +25,9 @@ const rewrites = {
   s: "s",
   a: "a",
   d: "d",
-  r: "respawn"
+  r: "respawn",
+  control: "bomb",
+  " ": "bullet"
 };
 
 const killAudio = new Audio("/sounds/kill.ogg");
@@ -53,10 +56,10 @@ const parseResponse = str => {
   const parts = [];
   const players = [];
   const bombs = [];
-  let isPlayer = true;
+  const bullets = [];
 
   str.split("").forEach(char => {
-    if(char === "!" || char === "?"){
+    if(char === "!" || char === "?" || char === "."){
       parts.push(char);
     }else{
       parts[parts.length - 1] += char;
@@ -64,10 +67,9 @@ const parseResponse = str => {
   });
 
   parts.forEach(part => {
-    if(part[0] === "?") isPlayer = false;
 
     const values = part.slice(1).split("=");
-    if(isPlayer){
+    if(part[0] === "!"){
       players.push({
         x: parseInt(convertBase(values[0], 64, 10)),
         y: parseInt(convertBase(values[1], 64, 10)),
@@ -81,8 +83,14 @@ const parseResponse = str => {
         width: 20,
         height: 20
       });
-    }else{
+    }else if(part[0] === "?"){
       bombs.push({
+        x: parseInt(convertBase(values[0], 64, 10)),
+        y: parseInt(convertBase(values[1], 64, 10)),
+        size: 10
+      });
+    }else if(part[0] === "."){
+      bullets.push({
         x: parseInt(convertBase(values[0], 64, 10)),
         y: parseInt(convertBase(values[1], 64, 10)),
         size: 10
@@ -125,7 +133,7 @@ document.querySelector("#respawn-btn").onclick = () => {
   newGame(lastHost);
 };
 
-const maxShotCooldown = 375;// ms
+//const maxShotCooldown = 375;// ms
 
 const newGame = host => {//eslint-disable-line no-unused-vars
   isDead = false;
@@ -257,6 +265,13 @@ const newGame = host => {//eslint-disable-line no-unused-vars
     return e => {
       let key = rewrites[e.key.toLowerCase()];
 
+      if(key === "bullet" || key === "bomb"){
+        if(type !== "keyUp") return;
+        shootAudio.play();
+        send({type: key});
+        return;
+      }
+
       if(key === "respawn"){//eslint-disable-line no-unused-vars
         if(type === "keyDown") return;
         socket.close();
@@ -273,17 +288,6 @@ const newGame = host => {//eslint-disable-line no-unused-vars
   onkeydown = getKeyPressFunc("keyDown");
 
   onkeyup = getKeyPressFunc("keyUp");
-
-
-  let lastShot = Date.now();
-  onkeypress = e => {
-    let now = Date.now();
-    if(e.key === " " && now - lastShot > maxShotCooldown){
-      lastShot = Date.now();
-      shootAudio.play();
-      send({type: "bomb"});
-    }
-  };
 };
 
 const decodeQueryStr = str => str.substr(1).split("&").map(query => query.split("=")).reduce((obj, that) => {
