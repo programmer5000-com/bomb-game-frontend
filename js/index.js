@@ -268,20 +268,22 @@ const newGame = host => {//eslint-disable-line no-unused-vars
       let key = rewrites[e.key.toLowerCase()];
 
       if(key === "shoot" || key === "bomb"){
-        if(type !== "keyUp") return;
+        if(type !== "keyUp") return e.preventDefault();
         console.log(key);
         shootAudio.play();
         send({type: key});
-        return;
+        return e.preventDefault();
       }
 
       if(key === "respawn"){//eslint-disable-line no-unused-vars
-        if(type === "keyDown") return;
+        if(type === "keyDown") return e.preventDefault();
         socket.close();
         showCanvas();
         newGame(lastHost);
+        e.preventDefault();
       }else if(key){
         send({type: type, data: key});
+        e.preventDefault();
       }else{
         console.log("unknown key", key, e.key);
       }
@@ -291,6 +293,11 @@ const newGame = host => {//eslint-disable-line no-unused-vars
   onkeydown = getKeyPressFunc("keyDown");
 
   onkeyup = getKeyPressFunc("keyUp");
+
+  onkeypress = e => {
+    console.log(e.key);
+    if(rewrites[e.key.toLowerCase()]) e.preventDefault();
+  };
 };
 
 const decodeQueryStr = str => str.substr(1).split("&").map(query => query.split("=")).reduce((obj, that) => {
