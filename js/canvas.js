@@ -68,7 +68,12 @@ const game = (map) => {//eslint-disable-line no-unused-vars
           return;
         }
 
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--color").trim() || "black";
+        if(block[4]){
+          ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--color-1") || "gray";
+        }else{
+          ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--color").trim() || "black";
+        }
+
         ctx.fillRect(block[0], block[1], block[2], block[3]);
       });
       bombs.forEach(bomb => {
