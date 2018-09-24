@@ -15,6 +15,17 @@ firebase.initializeApp(config);*/
 
 const $ = x => document.querySelector(x);
 
+const updateUsername = () => {
+  if(!firebase.auth().currentUser) return;
+
+  db.collection("users").doc(firebase.auth().currentUser.id).onSnapshot(function(doc) {
+    console.log("Current data: ", doc.data());
+    const username = doc.data().username;
+    if(!username) return;
+    document.querySelectorAll(".username").forEach(elem => elem.innerText = username);
+  });
+};
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
@@ -38,11 +49,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#no-account-play").setAttribute("hidden", "hidden");
     $("#account-play").removeAttribute("hidden");
 
-    db.collection("users").doc(uid).onSnapshot(function(doc) {
-      console.log("Current data: ", doc.data());
-      const username = doc.data().username;
-      document.querySelectorAll(".username").forEach(elem => elem.innerText = username);
-    });
+    updateUsername();
   } else {
     // User is signed out.
     console.log("SIGNED OUT");
@@ -78,6 +85,7 @@ $("#set-username-form").onsubmit = e => {
   e.preventDefault();
   db.collection("users").doc(firebase.auth().currentUser.uid).set({username: $("#set-username").value.trim()}).then(() => {
     $("#username-modal").setAttribute("hidden", "hidden");
+    updateUsername();
   }).catch(console.error);
 };
 
