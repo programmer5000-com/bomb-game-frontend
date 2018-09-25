@@ -12,7 +12,7 @@ let isDead = false;//eslint-disable-line no-unused-vars
 let blocks = [];
 let resetTime;//eslint-disable-line no-unused-vars
 
-const rewrites = {
+const controls = {
   arrowup: "up",
   arrowdown: "down",
   arrowleft: "left",
@@ -26,7 +26,7 @@ const rewrites = {
   a: "a",
   d: "d",
   r: "respawn",
-  control: "bomb",
+  shift: "bomb",
   " ": "shoot"
 };
 
@@ -265,7 +265,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
 
   const getKeyPressFunc = type => {
     return e => {
-      let key = rewrites[e.key.toLowerCase()];
+      let key = controls[e.key.toLowerCase()];
 
       if(key === "shoot" || key === "bomb"){
         if(type !== "keyUp") return e.preventDefault();
@@ -296,7 +296,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
 
   onkeypress = e => {
     console.log(e.key);
-    if(rewrites[e.key.toLowerCase()]) e.preventDefault();
+    if(controls[e.key.toLowerCase()]) e.preventDefault();
   };
 };
 
