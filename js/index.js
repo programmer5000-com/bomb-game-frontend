@@ -121,24 +121,24 @@ const showCanvas = () => {
 let lastHost;
 
 playBtn.onclick = playAccountBtn.onclick = () => {
-  let host = getHost("bomb-game.herokuapp.com:80");
+  let host = getHost("wss://server.programmer5000.com");
   showCanvas();
-  console.log("[socket] connecting to ws://" + host);
+  console.log("[socket] connecting to " + host);
   lastHost = host;
   newGame(host);
 };
 
 document.querySelector("#respawn-btn").onclick = () => {
-  console.log("[socket] connecting to ws://" + lastHost);
+  console.log("[socket] connecting to " + lastHost);
   showCanvas();
   newGame(lastHost);
 };
 
 //const maxShotCooldown = 375;// ms
 
-const newGame = host => {//eslint-disable-line no-unused-vars
+const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
   isDead = false;
-  socket = new WebSocket("ws://" + host);
+  socket = new WebSocket(host);
   socket.onopen = () => {
     console.log("[socket] connected");
     console.log(token);
