@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html class="dark-theme">
+<html class="dark-theme" lang = "en">
   <head>
     <meta charset="UTF-8">
     <title>Pixel Bomber</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="Shoot other players online & place bombs!">
     <link rel="preload" href="/font/RobotoMono.woff2" as="font" type="font/woff2">
     <link rel="preload" href="/font/VT323.woff2" as="font" type="font/woff2">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet">
@@ -50,13 +52,13 @@
       <br/>
       <br/>
       <div id = "signed-out" hidden>
-        <h2 id = "sign-in-width">Sign in or sign up with</h2>
-        <button class = "sign-in" data-auth-name="Google"><img src="/img/google_logo.png" class = "logo-button"></button>
-        <button class = "sign-in" data-auth-name="Github"><img src="/img/github_logo.png" class = "logo-button"></button>
+        <h2>Sign in or sign up with</h2>
+        <button class = "sign-in" data-auth-name="Google"><img alt="Sign up with Google" src="/img/google_logo.png" class = "logo-button"></button>
+        <button class = "sign-in" data-auth-name="Github"><img alt="Sign up with Github" src="/img/github_logo.png" class = "logo-button"></button>
       </div>
 
       <div id = "signed-in" hidden>
-        <h2 id = "sign-in-width">Signed in as</h2>
+        <h2>Signed in as</h2>
         <button id = "profile">
           <span class = "username">Unknown</span>
           <img class="logo-button" src="/">

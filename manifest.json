@@ -1,6 +1,7 @@
 {
   "gcm_sender_id": "103953800507",
   "name": "Pixel Bomber",
+  "short_name": "Pixel Bomber",
   "start_url": "/",
   "icons": [
     {
