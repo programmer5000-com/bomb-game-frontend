@@ -236,10 +236,12 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
             console.log("got players", JSON.stringify(data));
             break;
           case "explosion":
+            console.log("explosion");
             x = data.data.x;
             y = data.data.y;
             blocksDestroyed = data.data.blocksDestroyed;
-            broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === 1));
+            broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
+            console.log(blocksDestroyed, blocks, broken);
             broken.forEach(block => {
               console.log("remove", block);
               const index = blocks.indexOf(block);
