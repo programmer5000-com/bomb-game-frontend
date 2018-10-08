@@ -18,7 +18,7 @@ const $ = x => document.querySelector(x);
 const updateUsername = () => {
   if(!firebase.auth().currentUser) return;
 
-  db.collection("users").doc(firebase.auth().currentUser.id).onSnapshot(function(doc) {
+  db.collection("users").doc(firebase.auth().currentUser.uid).onSnapshot(function(doc) {
     console.log("Current data: ", doc.data());
     const username = doc.data().username;
     if(!username) return;
