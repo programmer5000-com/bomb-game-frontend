@@ -122,8 +122,6 @@ let lastHost;
 
 playBtn.onclick = playAccountBtn.onclick = () => {
   let host = getHost("wss://server.programmer5000.com");
-  showCanvas();
-  document.querySelector("#loading").removeAttribute("hidden");
   console.log("[socket] connecting to " + host);
   lastHost = host;
   newGame(host);
@@ -138,10 +136,13 @@ document.querySelector("#respawn-btn").onclick = () => {
 //const maxShotCooldown = 375;// ms
 
 const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
+  document.querySelector("#game").setAttribute("hidden", "hidden");
+  document.querySelector("#loading").removeAttribute("hidden");
   isDead = false;
   socket = new WebSocket(host);
   socket.onopen = () => {
     document.querySelector("#loading").setAttribute("hidden", "hidden");
+    showCanvas();
     console.log("[socket] connected");
     console.log(token);
     send({type: "hello", data: {token: token}});
