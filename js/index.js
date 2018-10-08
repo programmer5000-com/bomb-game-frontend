@@ -121,6 +121,7 @@ const showCanvas = () => {
 let lastHost;
 
 playBtn.onclick = playAccountBtn.onclick = () => {
+  document.querySelectorAll("body > *").forEach(elem => elem.setAttribute("hidden", "hidden"));
   let host = getHost("wss://server.programmer5000.com");
   console.log("[socket] connecting to " + host);
   lastHost = host;
@@ -151,7 +152,6 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
 
   socket.onmessage = (e) => {
     try{
-      console.log(e.data);
       if(!e.data.trim()) return;
       if(e.data[0] === "!" || e.data[0] === "?"){
         const parsed = parseResponse(e.data);
