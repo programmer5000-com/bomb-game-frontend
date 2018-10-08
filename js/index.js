@@ -123,6 +123,7 @@ let lastHost;
 playBtn.onclick = playAccountBtn.onclick = () => {
   let host = getHost("wss://server.programmer5000.com");
   showCanvas();
+  document.querySelector("#loading").removeAttribute("hidden");
   console.log("[socket] connecting to " + host);
   lastHost = host;
   newGame(host);
@@ -140,6 +141,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
   isDead = false;
   socket = new WebSocket(host);
   socket.onopen = () => {
+    document.querySelector("#loading").setAttribute("hidden", "hidden");
     console.log("[socket] connected");
     console.log(token);
     send({type: "hello", data: {token: token}});
@@ -148,6 +150,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
 
   socket.onmessage = (e) => {
     try{
+      console.log(e.data);
       if(!e.data.trim()) return;
       if(e.data[0] === "!" || e.data[0] === "?"){
         const parsed = parseResponse(e.data);
