@@ -209,6 +209,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
             players.push(data.data);
             break;
           case "removePlayer":
+            console.log(data);
             players.some(player => {
               if(player.id === data.data){
                 playerToRemove = player;
@@ -219,6 +220,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
             players.splice(players.indexOf(playerToRemove), 1);
             break;
           case "kill":
+            console.log(data);
             lastKill = "";
             if(myId === data.data.victim.id){
               console.log("i was killed by ", data.data.killer.username);
@@ -240,14 +242,14 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
             console.log("got players", JSON.stringify(data));
             break;
           case "explosion":
-            console.log("explosion");
+            //console.log("explosion");
             x = data.data.x;
             y = data.data.y;
             blocksDestroyed = data.data.blocksDestroyed;
             broken = blocks.filter(block => blocksDestroyed.some(destroyed => destroyed[0] === block[0] && destroyed[1] === block[1]));
             console.log(blocksDestroyed, blocks, broken);
             broken.forEach(block => {
-              console.log("remove", block);
+              //console.log("remove", block);
               const index = blocks.indexOf(block);
               if(index) blocks.splice(index, 1);
             });
