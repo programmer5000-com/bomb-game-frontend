@@ -184,7 +184,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     			</tr>
     	</thead>
     <tbody>`;
-    players.sort((player1, player2) => player2.killStreak - player1.killStreak).slice(0, 10).forEach(player => {
+    players.sort((player1, player2) => player1.id - player2.id).sort((player1, player2) => player2.killStreak - player1.killStreak).slice(0, 10).forEach(player => {
       table.innerHTML += `<tr>
 					 <td>${player.username}</td>
 				   <td>${player.killStreak}</td>
