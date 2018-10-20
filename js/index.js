@@ -145,7 +145,6 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
     document.querySelector("#loading").setAttribute("hidden", "hidden");
     showCanvas();
     console.log("[socket] connected");
-    console.log(token);
     send({type: "hello", data: {token: token}});
   };
 

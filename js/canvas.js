@@ -1,5 +1,34 @@
 /* global players: false, myId: false, bombs: false, bullets: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false, resetTime: false */
 
+const sha1 = str => {
+  // We transform the string into an arraybuffer.
+  let buffer = new TextEncoder("utf-8").encode(str);
+  return crypto.subtle.digest("SHA-1", buffer).then(function (hash) {
+    return hex(hash);
+  });
+};
+
+const hex  = buffer =>  {
+  let hexCodes = [];
+  let view = new DataView(buffer);
+  for (let i = 0; i < view.byteLength; i += 4) {
+    // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
+    let value = view.getUint32(i);
+    // toString(16) will give the hex representation of the number without padding
+    let stringValue = value.toString(16);
+    // We use concatenation and slice for padding
+    let padding = "00000000";
+    let paddedValue = (padding + stringValue).slice(-padding.length);
+    hexCodes.push(paddedValue);
+  }
+
+  // Join all the hex strings into one
+  return hexCodes.join("");
+};
+
+let lastHash;
+
+
 const leaderboard = document.querySelector("#leaderboard");
 
 let kill = false;
@@ -172,11 +201,7 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       lastKill = "";
     }
 
-    if(leaderboard.children[0]) leaderboard.children[0].remove();
-    if(leaderboard.children[0]) leaderboard.children[0].remove();
-
-    const table = document.createElement("table");
-    table.innerHTML = `<table>
+    let html = `<table>
     	<thead>
     			<tr>
     					<td>Player</td>
@@ -185,15 +210,27 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     	</thead>
     <tbody>`;
     players.sort((player1, player2) => player1.id - player2.id).sort((player1, player2) => player2.killStreak - player1.killStreak).slice(0, 10).forEach(player => {
-      table.innerHTML += `<tr>
+      html += `<tr>
 					 <td>${player.username}</td>
 				   <td>${player.killStreak}</td>
   			</tr>
 			`;
     });
-    table.innerHTML += "</tbody></table>";
-    leaderboard.appendChild(table);
+    html += "</tbody></table>";
 
+    sha1(html).then(hash => {
+      if(hash === lastHash) return;
+      if(leaderboard.children[0]) leaderboard.children[0].remove();
+      if(leaderboard.children[0]) leaderboard.children[0].remove();
+      const table = document.createElement("table");
+      table.innerHTML = html;
+      leaderboard.appendChild(table);
+      lastHash = hash;
+    });
+
+    const elem = document.querySelector("#last-kill");
+    if(elem && elem.innerText === lastKill) return;
+    if(elem) elem.remove();
     const div = document.createElement("div");
     div.setAttribute("id", "last-kill");
     div.innerText = lastKill;
