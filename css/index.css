@@ -69,12 +69,13 @@ canvas:first-child{
 .overlay{
   position: absolute;
   margin-left: auto;
-  background-color: #aaaaaaa8;
+  background-color: #aaaaaabf;
 }
 
 #leaderboard{
   top: 0;
   right: 0;
+  color: black;
 }
 
 #reset{
