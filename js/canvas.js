@@ -228,12 +228,13 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       lastHash = hash;
     });
 
-    const elem = document.querySelector("#last-kill");
-    if(elem && elem.innerText === lastKill) return;
-    if(elem) elem.remove();
-    const div = document.createElement("div");
-    div.setAttribute("id", "last-kill");
-    div.innerText = lastKill;
-    leaderboard.appendChild(div);
+    const killFeedElem = document.querySelector("#kill-feed");
+    if(!lastKill){
+      console.log("no last kill");
+      killFeedElem.setAttribute("hidden", "hidden");
+      return;
+    }
+    killFeedElem.removeAttribute("hidden");
+    killFeedElem.innerText = lastKill;
   }, 250);
 };

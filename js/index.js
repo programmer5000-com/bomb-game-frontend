@@ -12,6 +12,12 @@ let isDead = false;//eslint-disable-line no-unused-vars
 let blocks = [];
 let resetTime;//eslint-disable-line no-unused-vars
 
+const getKillString = (killer, victim, iAmKiller) => {
+  if(killer === victim) return `${killer} killed themself`;
+  if(iAmKiller) return `You killed ${victim}`;
+  if(iAmKiller) return `${killer} killed ${victim}`;
+};
+
 const controls = {
   arrowup: "up",
   arrowdown: "down",
@@ -231,7 +237,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
               killer.killStreak = data.data.killer.killStreak;
             }
             console.log(data.data);
-            lastKill = data.data.killer.username + " killed " + data.data.victim.username;
+            lastKill = getKillString(data.data.killer.username, data.data.victim.username, data.data.killer.id === myId);
 
             lastKillTimeout = 16;
             killAudio.play();
