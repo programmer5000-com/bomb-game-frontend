@@ -1,5 +1,7 @@
 /* global players: false, myId: false, bombs: false, bullets: false, lastKill: true, lastKillTimeout: true, isDead: false, blocks: false, resetTime: false */
 
+const killTimeoutMax = 100;
+
 const sha1 = str => {
   // We transform the string into an arraybuffer.
   let buffer = new TextEncoder("utf-8").encode(str);
@@ -67,6 +69,8 @@ const game = (map) => {//eslint-disable-line no-unused-vars
     document.querySelector("#reset").setAttribute("hidden", "hidden");
     return;
   };
+
+  const killFeedElem = document.querySelector("#kill-feed");
 
   const draw = function(){
     let start = performance.now();
@@ -169,6 +173,25 @@ const game = (map) => {//eslint-disable-line no-unused-vars
         ctx.strokeText(player.username, player.x + (player.width / 2), player.y);
         ctx.fillStyle = "black";
         ctx.fillText(player.username, player.x + (player.width / 2), player.y);
+
+        if(Date.now() - lastKillTimeout > killTimeoutMax){
+          lastKillTimeout = 0;
+          lastKill = "";
+        }
+
+        if(killFeedElem.innerText){
+          lastKill = "";
+          killFeedElem.innerText = "";
+        }
+        if(!lastKill){
+          console.log("no last kill");
+          killFeedElem.setAttribute("hidden", "hidden");
+          return;
+        }
+
+
+        killFeedElem.removeAttribute("hidden");
+        killFeedElem.innerText = lastKill;
       });
       ctx.restore();
     }
@@ -196,10 +219,6 @@ const game = (map) => {//eslint-disable-line no-unused-vars
   requestAnimationFrame(draw);
 
   setInterval(() => {
-    lastKillTimeout --;
-    if(lastKillTimeout < 1){
-      lastKill = "";
-    }
 
     let html = `<table>
     	<thead>
@@ -227,14 +246,5 @@ const game = (map) => {//eslint-disable-line no-unused-vars
       leaderboard.appendChild(table);
       lastHash = hash;
     });
-
-    const killFeedElem = document.querySelector("#kill-feed");
-    if(!lastKill){
-      console.log("no last kill");
-      killFeedElem.setAttribute("hidden", "hidden");
-      return;
-    }
-    killFeedElem.removeAttribute("hidden");
-    killFeedElem.innerText = lastKill;
-  }, 250);
+  }, 1000);
 };

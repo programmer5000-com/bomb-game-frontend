@@ -239,7 +239,7 @@ const newGame = (host, ssl) => {//eslint-disable-line no-unused-vars
             console.log(data.data);
             lastKill = getKillString(data.data.killer.username, data.data.victim.username, data.data.killer.id === myId);
 
-            lastKillTimeout = 16;
+            lastKillTimeout = Date.now();
             killAudio.play();
             break;
           case "players":
